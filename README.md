@@ -34,10 +34,21 @@ https://lottiefiles-test.vercel.app/
 - `cloud-worker/`: Source file for cloudflare worker.
 - `src/`: Source files for the application.
   - `components/`: React components.
+  - `pages/`: React components.
   - `hooks/`: Custom hooks.
   - `helpers/`: Helper functions and constants.
   - `service-worker/`: Service worker setup for caching and offline capabilities.
 
+## Application Pages
+
+The application is structured around two main pages which are essential for the user interaction:
+
+1. **Home Page**:
+   - This is the landing page where users can search and preview animations.
+   
+2. **Library Page**:
+   - This page allows users to view, save, or remove animations to and from their personal library. The animations saved here can be managed even when offline, thanks to the service worker's background synchronization capabilities.
+   - 
 ## Offline Capabilities
 The application uses a service worker to cache assets and API responses, enabling offline access to cached animations.
 
