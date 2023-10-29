@@ -5,6 +5,10 @@ import {
   SearchPublicAnimations,
 } from "./types";
 
+
+const BASE_URL = import.meta.env.BASE_URL || ""
+
+
 export async function searchForAnimations({
   query,
   first,
@@ -73,7 +77,7 @@ export async function postSearch(body: string) {
 export async function saveAnimationToServer(
   animationData: SaveAnimationPayload
 ) {
-  return fetch("/api", {
+  return fetch(`${BASE_URL}/api`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -83,7 +87,7 @@ export async function saveAnimationToServer(
 }
 
 export async function removeAnimationFromServer(cursor: string) {
-  return fetch(`/api/${cursor}`, {
+  return fetch(`${BASE_URL}/api/${cursor}`, {
     method: "DELETE",
   });
 }
