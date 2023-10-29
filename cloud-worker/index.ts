@@ -5,7 +5,9 @@ import z from "zod";
 
 const app = new Hono();
 
-app.get("/", cors(), async (c) => {
+app.use('/*', cors())
+
+app.get("/api", async (c) => {
   if (!c.env?.LIBSQL_DB_URL || !c.env.LIBSQL_DB_AUTH_TOKEN) {
     return c.text("ENV not good");
   }
@@ -23,7 +25,7 @@ app.get("/", cors(), async (c) => {
   }
 });
 
-app.post("/", cors(), async (c) => {
+app.post("/api", async (c) => {
   if (!c.env?.LIBSQL_DB_URL || !c.env.LIBSQL_DB_AUTH_TOKEN) {
     return c.text("ENV not good");
   }
@@ -68,7 +70,7 @@ app.post("/", cors(), async (c) => {
   }
 });
 
-app.delete("/:cursor", cors(), async (c) => {
+app.delete("/api/:cursor", async (c) => {
   if (!c.env?.LIBSQL_DB_URL || !c.env.LIBSQL_DB_AUTH_TOKEN) {
     return c.text("ENV not good");
   }
