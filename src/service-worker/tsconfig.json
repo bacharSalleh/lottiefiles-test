@@ -1,0 +1,9 @@
+{
+  "compilerOptions": {
+    "types": ["serviceworker"],
+    "lib": ["ESNext", "DOM"],
+    "esModuleInterop": true
+  },
+  "include": ["./*.ts"],
+  "files": ["./sw.d.ts"]
+}
