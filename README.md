@@ -22,15 +22,16 @@ npm install
 Run the application:
 ```bash
 npm run dev
+npx wrangler dev
 ```
 
 View online
 ```
-https://vercel.com/bacharsalleh/lottiefiles-test
+https://lottiefiles-test.vercel.app/
 ```
 
 ## Directory Structure
-
+- `cloud-worker/`: Source file for cloudflare worker.
 - `src/`: Source files for the application.
   - `components/`: React components.
   - `hooks/`: Custom hooks.
@@ -56,8 +57,6 @@ This script configures a Service Worker to enable caching, routing, and backgrou
 
 ### Imports
 - Various [Workbox](https://github.com/GoogleChrome/workbox) libraries for precaching, routing, and cache expiration.
-- Helper function `postSearch` from `../helpers/http`.
-- Constants from `../helpers/constants`.
 - `localforage` for local storage management.
 - `CryptoJS` for generating hash values.
 - `CacheService` for cache management.
@@ -75,8 +74,21 @@ This script configures a Service Worker to enable caching, routing, and backgrou
 - Register routes for navigation requests and caching Lottie animation JSON files.
 
 ### Helper Functions
-- `searchForAnimationsWithFetch`: Handles fetching animations with offline support.
-- `requestBackgroundSyncForSearchQuery`: Registers a background sync task for search queries.
+1. **`searchForAnimationsWithFetch` Function:**
+   - Handles animation fetch requests, especially when offline, by registering a background sync or returning cached data.
+
+2. **`saveAnimationWithFetch` Function:**
+   - Manages the saving of animations when offline by storing them locally and registering a background sync for later synchronization.
+
+3. **`removeAnimationWithFetch` Function:**
+   - Manages removal of animations when offline by storing the animation identifiers locally and registering a background sync for later synchronization.
+
+4. **`syncSaveAnimation`, `syncRemoveAnimation`, and `syncSearchAnimations` Functions:**
+   - These functions handle the synchronization of saved, removed, and searched animations respectively once online connectivity is restored.
+
+5. **`requestBackgroundSyncForSearchQuery` Function:**
+   - Registers a background sync for search queries when offline and stores the search query locally for later synchronization.
+
 
 ### Cache Management
 - Utilize `graphqlResCache` and `localforage` to manage cached data, and `CryptoJS` to generate hash keys for cache entries.
@@ -84,10 +96,27 @@ This script configures a Service Worker to enable caching, routing, and backgrou
 <br>
 <br>
 <br>
-       
-
-## Hook Documentation `useLottieAnimations` 
-
-This custom React hook facilitates querying Lottie animations, handling pagination, and communicating with a service worker for offline support.
 
 
+## Server Architecture
+
+The Lottie Animations Explorer utilizes a server architecture powered by Cloudflare Workers and TurboDB (edge database) for managing user libraries. 
+
+- **Cloudflare Workers:** 
+   - Hosts two API endpoints, one for posting and another for removing animations. 
+   - Interacts with TurboDB for data persistence.
+   
+- **TurboDB (Edge Database):** 
+   - Utilized for storing and managing animation data efficiently at the edge.
+
+- **API Interaction:** 
+   - `saveAnimationToServer` and `removeAnimationFromServer` functions in the service worker script send requests to the respective endpoints hosted on Cloudflare Workers.
+   - These functions handle the posting and removing of animations, enabling users to manage their library even while offline, with changes synchronized when back online. 
+
+- **Offline Capabilities:**
+   - Service Worker scripts ensure seamless offline functionality, with background synchronization to update the server once the app regains network connectivity.
+
+- **Environment Configuration:** 
+   - Utilizes an environment variable `VITE_API_URL` to manage the base URL for server endpoints, ensuring flexibility between development and production environments.
+
+This architecture leverages edge computing and efficient database management to provide a robust and user-friendly experience.
