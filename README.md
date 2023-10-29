@@ -1,28 +1,93 @@
-# React + TypeScript + Vite
+# Lottie Animations Explorer Documentation
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Overview
+This React application allows users to search, preview Lottie animations. The application is built with offline-first capabilities ensuring a seamless user experience even without network connectivity.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **Search Animations**: Users can search for Lottie animations using a search bar.
+- **Preview Animations**: Display a list of animations based on the search query.
+- **Offline Access**: Caching of animations for offline access and preview.
+- **Pagination**: Navigate through multiple pages of animation results.
 
-## Expanding the ESLint configuration
+## Setup
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
-
-- Configure the top-level `parserOptions` property like this:
-
-```js
-   parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-   },
+Clone the repository and install the dependencies:
+```bash
+git clone https://github.com/bacharSalleh/lottiefiles-test
+cd lottiefiles-test
+npm install
 ```
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
-# lottiefiles-test
+Run the application:
+```bash
+npm run dev
+```
+
+View online
+```
+https://vercel.com/bacharsalleh/lottiefiles-test
+```
+
+## Directory Structure
+
+- `src/`: Source files for the application.
+  - `components/`: React components.
+  - `hooks/`: Custom hooks.
+  - `helpers/`: Helper functions and constants.
+  - `service-worker/`: Service worker setup for caching and offline capabilities.
+
+## Offline Capabilities
+The application uses a service worker to cache assets and API responses, enabling offline access to cached animations.
+
+## Pagination
+Users can navigate through different pages of animation results using the Next and Back buttons.
+
+
+
+<br>
+<br>
+<br>
+<br>
+
+## Service Worker Documentation  `src/service-worker/sw.ts` 
+
+This script configures a Service Worker to enable caching, routing, and background synchronization in the application, enhancing offline capabilities.
+
+### Imports
+- Various [Workbox](https://github.com/GoogleChrome/workbox) libraries for precaching, routing, and cache expiration.
+- Helper function `postSearch` from `../helpers/http`.
+- Constants from `../helpers/constants`.
+- `localforage` for local storage management.
+- `CryptoJS` for generating hash values.
+- `CacheService` for cache management.
+
+### Cache Initialization
+- Create `graphqlResCache` instance of `CacheService`.
+- Call `cleanupOutdatedCaches` and `precacheAndRoute` to manage caches.
+
+### Event Listeners
+- `install` and `activate` listeners for service worker lifecycle management.
+- `fetch` listener to handle network requests and respond with cached data or fetch from the network.
+- `sync` listener to handle background synchronization tasks.
+
+### Route Registrations
+- Register routes for navigation requests and caching Lottie animation JSON files.
+
+### Helper Functions
+- `searchForAnimationsWithFetch`: Handles fetching animations with offline support.
+- `requestBackgroundSyncForSearchQuery`: Registers a background sync task for search queries.
+
+### Cache Management
+- Utilize `graphqlResCache` and `localforage` to manage cached data, and `CryptoJS` to generate hash keys for cache entries.
+
+<br>
+<br>
+<br>
+       
+
+## Hook Documentation `useLottieAnimations` 
+
+This custom React hook facilitates querying Lottie animations, handling pagination, and communicating with a service worker for offline support.
+
+

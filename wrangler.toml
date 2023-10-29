@@ -1,0 +1,6 @@
+name = "lottiefiles-task"
+main = "cloud-worker/index.ts"
+compatibility_date = "2023-10-29"
+
+[vars]
+LIBSQL_DB_URL = "libsql://lotties-bacharsalleh.turso.io"

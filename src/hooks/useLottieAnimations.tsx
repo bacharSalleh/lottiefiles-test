@@ -1,10 +1,15 @@
+/**
+ * This module defines a custom React hook `useLottieAnimations` which facilitates querying Lottie animations,
+ * handling pagination, and communicating with a service worker for offline support.
+ */
+
 import { useCallback, useEffect, useState } from "react";
 import { searchForAnimations } from "../helpers/http";
 import {
   SearchAnimationsQueryVariables,
   SearchPublicAnimations,
 } from "../helpers/types";
-import { BACKGROUND_SEARCH_QUERY_RESULT } from "../helpers/constants";
+import { SYNC_BACKGROUND_SEARCH_QUERY_RESULT } from "../helpers/constants";
 
 export function useLottieAnimations({
   query,
@@ -22,6 +27,7 @@ export function useLottieAnimations({
     setPage((prevPage) => prevPage - 1);
   }, []);
 
+  // Callback function to save pagination info for the next page
   const storeNextPageInfo = useCallback(
     (data: SearchPublicAnimations) => {
       const { hasNextPage, endCursor } = data.searchPublicAnimations.pageInfo;
@@ -35,6 +41,7 @@ export function useLottieAnimations({
     [page]
   );
 
+  // Effect hook to handle data fetching based on query and page changes
   useEffect(() => {
     const pageMeta = Page.getPage(page);
     setFetching(true);
@@ -49,11 +56,12 @@ export function useLottieAnimations({
       .finally(() => setFetching(false));
   }, [page, query, storeNextPageInfo]);
 
+  // Effect hook to handle messages from the service worker
   useEffect(() => {
     function handleServiceWorkerMessage(
       event: MessageEvent<{ type: string; msg: SearchPublicAnimations }>
     ) {
-      if (event.data.type === BACKGROUND_SEARCH_QUERY_RESULT) {
+      if (event.data.type === SYNC_BACKGROUND_SEARCH_QUERY_RESULT) {
         const searchData = event.data.msg;
         setError(null);
         setData(searchData);
@@ -66,6 +74,7 @@ export function useLottieAnimations({
       handleServiceWorkerMessage
     );
 
+    // Cleanup listener on component unmount
     return () => {
       navigator.serviceWorker.removeEventListener(
         "message",
@@ -77,8 +86,8 @@ export function useLottieAnimations({
   return [fetching, data, error, nextPage, prevPage] as const;
 }
 
+// Class to manage pagination info in local storage
 type PageInfo = Pick<SearchAnimationsQueryVariables, "after" | "first">;
-
 class Page {
   static savePage(pageNumber: number, pageInfo: PageInfo) {
     localStorage.setItem(`page_${pageNumber}`, JSON.stringify(pageInfo));

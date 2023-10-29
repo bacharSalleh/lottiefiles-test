@@ -1,21 +1,21 @@
 /* eslint-disable */
 
+export type AnimationNode = {
+  lottieUrl?: string;
+  jsonUrl?: string;
+  createdBy?: { __typename?: "User"; firstName: string };
+};
+
+export type AnimationEdge = {
+  cursor: string;
+  node: AnimationNode;
+}
+
 export type SearchAnimationsQuery = {
   __typename?: "Query";
   searchPublicAnimations: {
-    __typename?: "PublicAnimationConnection";
-    edges: Array<{
-      __typename?: "PublicAnimationEdge";
-      cursor: string;
-      node: {
-        __typename?: "PublicAnimation";
-        lottieUrl?: string;
-        jsonUrl?: string;
-        createdBy?: { __typename?: "User"; firstName: string };
-      };
-    }>;
+    edges: Array<AnimationEdge>;
     pageInfo: {
-      __typename?: "PageInfo";
       endCursor?: string;
       hasNextPage: boolean;
       hasPreviousPage: boolean;
@@ -30,8 +30,14 @@ export type SearchAnimationsQueryVariables = {
   after?: string;
 };
 
-
 export type SearchPublicAnimations = Pick<
   SearchAnimationsQuery,
   "searchPublicAnimations"
 >;
+
+export type SaveAnimationPayload = {
+  cursor: string;
+  lottieUrl: string;
+  jsonUrl: string;
+  createdByFirstName: string;
+}

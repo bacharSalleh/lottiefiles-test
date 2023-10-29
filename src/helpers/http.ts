@@ -1,4 +1,5 @@
 import {
+  SaveAnimationPayload,
   SearchAnimationsQuery,
   SearchAnimationsQueryVariables,
   SearchPublicAnimations,
@@ -9,7 +10,6 @@ export async function searchForAnimations({
   first,
   after,
 }: SearchAnimationsQueryVariables): Promise<SearchPublicAnimations> {
-
   const graphqlQuery = {
     operationName: "searchAnimations",
     query: `
@@ -67,5 +67,23 @@ export async function postSearch(body: string) {
       "Content-Type": "application/json",
     },
     body,
+  });
+}
+
+export async function saveAnimationToServer(
+  animationData: SaveAnimationPayload
+) {
+  return fetch("/api", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(animationData),
+  });
+}
+
+export async function removeAnimationFromServer(cursor: string) {
+  return fetch(`/api/${cursor}`, {
+    method: "DELETE",
   });
 }
