@@ -72,10 +72,6 @@ self.addEventListener("fetch", async (event) => {
     event.respondWith(saveAnimationWithFetch(event));
   }
 
-  console.log(
-    /^\/api\/.+$/.test(url.pathname) && event.request.method === "DELETE"
-  );
-
   if (/^\/api\/.+$/.test(url.pathname) && event.request.method === "DELETE") {
     event.respondWith(removeAnimationWithFetch(event));
   }
@@ -87,7 +83,6 @@ self.addEventListener("fetch", async (event) => {
  * It's used here to fetch and cache the results of a search query that was made while offline.
  */
 self.addEventListener("sync", (event) => {
-  console.log(event.tag);
   if (event.tag === SYNC_BACKGROUND_SEARCH_QUERY_TAG) {
     event.waitUntil(syncSearchAnimations());
   }
@@ -179,8 +174,7 @@ async function syncSaveAnimation() {
 
   for (const animation of animations) {
     try {
-      await saveAnimationToServer(animation); // Assuming saveAnimationToServer is available globally or imported
-      // Remove the successfully saved animation from the list
+      await saveAnimationToServer(animation); 
       animations.splice(animations.indexOf(animation), 1);
       await localforage.setItem("animations-to-save", animations);
     } catch (error) {

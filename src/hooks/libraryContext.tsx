@@ -6,7 +6,6 @@ import {
 import { AnimationEdge } from "../helpers/types";
 import { createContext, useContext } from "react";
 
-// Create a Context
 type LibraryContextType = {
   animations: AnimationEdge[];
   saveAnimation: (animationData: AnimationEdge) => Promise<boolean>;

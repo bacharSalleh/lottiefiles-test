@@ -40,8 +40,7 @@ app.post("/api", async (c) => {
       createdByFirstName: z.string(),
     });
 
-    AnimationEdgeSchema.parse(data); // This will throw if validation fails
-
+    AnimationEdgeSchema.parse(data); 
     const db = createClient({
       url: String(c.env.LIBSQL_DB_URL),
       authToken: String(c.env.LIBSQL_DB_AUTH_TOKEN),
@@ -64,8 +63,6 @@ app.post("/api", async (c) => {
 
     return c.text("success", 200);
   } catch (e) {
-    console.log(e);
-
     return c.text("Validation or DB insertion failed", 400);
   }
 });
