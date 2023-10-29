@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc && cross-env BASE_URL=https://lottiefiles-task.welcomebachar.workers.dev vite build",
+    "build": "tsc && vite build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "publish-worker": "wrangler publish"
@@ -14,7 +14,6 @@
     "@libsql/client": "^0.3.6",
     "@lottiefiles/react-lottie-player": "^3.5.3",
     "autoprefixer": "^10.4.16",
-    "cross-env": "^7.0.3",
     "crypto-js": "^4.2.0",
     "hono": "^3.9.0",
     "localforage": "^1.10.0",

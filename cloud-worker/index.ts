@@ -1,10 +1,11 @@
 import { Hono } from "hono";
+import { cors } from "hono/cors";
 import { createClient } from "@libsql/client";
 import z from "zod";
 
 const app = new Hono();
 
-app.get("/", async (c) => {
+app.get("/", cors(), async (c) => {
   if (!c.env?.LIBSQL_DB_URL || !c.env.LIBSQL_DB_AUTH_TOKEN) {
     return c.text("ENV not good");
   }
@@ -22,7 +23,7 @@ app.get("/", async (c) => {
   }
 });
 
-app.post("/", async (c) => {
+app.post("/", cors(), async (c) => {
   if (!c.env?.LIBSQL_DB_URL || !c.env.LIBSQL_DB_AUTH_TOKEN) {
     return c.text("ENV not good");
   }
@@ -67,7 +68,7 @@ app.post("/", async (c) => {
   }
 });
 
-app.delete("/:cursor", async (c) => {
+app.delete("/:cursor", cors(), async (c) => {
   if (!c.env?.LIBSQL_DB_URL || !c.env.LIBSQL_DB_AUTH_TOKEN) {
     return c.text("ENV not good");
   }

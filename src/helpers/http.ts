@@ -6,7 +6,9 @@ import {
 } from "./types";
 
 
-const BASE_URL = import.meta.env.BASE_URL || ""
+console.log(import.meta.env);
+
+const BASE_URL = import.meta.env.VITE_API_URL || ""
 
 
 export async function searchForAnimations({
